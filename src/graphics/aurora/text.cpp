@@ -27,6 +27,8 @@
  *  A text object.
  */
 
+#include "common/maths.h"
+
 #include "events/requests.h"
 
 #include "graphics/graphics.h"
