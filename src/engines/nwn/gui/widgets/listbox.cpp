@@ -132,7 +132,7 @@ void WidgetListItem::signalGroupMemberActive() {
 
 
 WidgetListItemTextLine::WidgetListItemTextLine(::Engines::GUI &gui,
-    const Common::UString &font, const Common::UString &text, float spacing) :
+	const Common::UString &font, const Common::UString &text, float spacing) :
 	WidgetListItem(gui),
 	_uR(1.0), _uG(1.0), _uB(1.0), _uA(1.0),
 	_sR(1.0), _sG(1.0), _sB(0.0), _sA(1.0), _spacing(spacing) {
@@ -222,7 +222,7 @@ bool WidgetListItemTextLine::deactivate() {
 
 
 WidgetListBox::WidgetListBox(::Engines::GUI &gui, const Common::UString &tag,
-                             const Common::UString &model) :
+							 const Common::UString &model) :
 	ModelWidget(gui, tag, model),
 	_mode(kModeStatic), _contentX(0.0), _contentY(0.0), _contentZ(0.0),
 	_hasScrollbar(false), _up(0), _down(0), _scrollbar(0), _dblClicked(false),
@@ -462,7 +462,7 @@ void WidgetListBox::unlock() {
 }
 
 void WidgetListBox::setText(const Common::UString &font,
-                            const Common::UString &text, float spacing) {
+							const Common::UString &text, float spacing) {
 
 	lock();
 	clear();

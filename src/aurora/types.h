@@ -411,6 +411,12 @@ class GFFStruct;
 typedef std::list<GFFStruct *> GFFList;
 class GFFFile;
 
+struct Vector3 {
+	float x;
+	float y;
+	float z;
+};
+
 } // End of namespace Aurora
 
 #endif // AURORA_TYPES_H

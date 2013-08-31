@@ -33,6 +33,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <memory>
 
 #include "common/ustring.h"
 #include "common/mutex.h"
@@ -49,11 +50,16 @@
 #include "graphics/aurora/types.h"
 #include "graphics/aurora/model.h"
 
+namespace Aurora {
+	class WalkMesh;
+}
+
 namespace Engines {
 
 namespace KotOR {
 
 class Object;
+class Room;
 
 /** A KotOR area. */
 class Area : public Events::Notifyable {
@@ -80,19 +86,6 @@ protected:
 
 
 private:
-	/** A room within the area. */
-	struct Room {
-		const Aurora::LYTFile::Room *lytRoom;
-
-		Graphics::Aurora::Model *model;
-
-		bool visible;
-		std::vector<Room *> visibles;
-
-		Room(const Aurora::LYTFile::Room &lRoom);
-		~Room();
-	};
-
 	typedef std::list<Object *> ObjectList;
 
 	typedef std::map<uint32, Object *> ObjectMap;
@@ -123,7 +116,7 @@ private:
 	Aurora::LYTFile _lyt;
 	Aurora::VISFile _vis;
 
-	std::vector<Room *> _rooms;
+	std::vector<std::unique_ptr<Room>> _rooms;
 
 	ObjectList _objects;
 

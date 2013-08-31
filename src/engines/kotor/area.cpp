@@ -36,6 +36,8 @@
 #include "aurora/gfffile.h"
 #include "aurora/2dafile.h"
 #include "aurora/2dareg.h"
+#include "aurora/wokfile.h"
+#include "aurora/walkmesh.h"
 
 #include "graphics/graphics.h"
 
@@ -47,22 +49,16 @@
 #include "engines/aurora/model.h"
 
 #include "engines/kotor/area.h"
+#include "engines/kotor/room.h"
 #include "engines/kotor/placeable.h"
 #include "engines/kotor/door.h"
 #include "engines/kotor/creature.h"
 
+#include <memory>
+
 namespace Engines {
 
 namespace KotOR {
-
-Area::Room::Room(const Aurora::LYTFile::Room &lRoom) :
-	lytRoom(&lRoom), model(0), visible(false) {
-}
-
-Area::Room::~Room() {
-	delete model;
-}
-
 
 Area::Area() : _loaded(false), _visible(false), _activeObject(0), _highlightAll(false) {
 }
@@ -74,9 +70,6 @@ Area::~Area() {
 
 	for (ObjectList::iterator o = _objects.begin(); o != _objects.end(); ++o)
 		delete *o;
-
-	for (std::vector<Room *>::iterator r = _rooms.begin(); r != _rooms.end(); ++r)
-		delete *r;
 }
 
 const Common::UString &Area::getName() {
@@ -134,8 +127,8 @@ void Area::show() {
 	GfxMan.lockFrame();
 
 	// Show rooms
-	for (std::vector<Room *>::iterator r = _rooms.begin(); r != _rooms.end(); ++r)
-		(*r)->model->show();
+	for (auto r = _rooms.begin(); r != _rooms.end(); ++r)
+		(*r)->show();
 
 	// Show objects
 	for (ObjectList::iterator o = _objects.begin(); o != _objects.end(); ++o)
@@ -163,8 +156,8 @@ void Area::hide() {
 		(*o)->hide();
 
 	// Hide rooms
-	for (std::vector<Room *>::iterator room = _rooms.begin(); room != _rooms.end(); ++room)
-		(*room)->model->hide();
+	for (auto r = _rooms.begin(); r != _rooms.end(); ++r)
+		(*r)->hide();
 
 	GfxMan.unlockFrame();
 
@@ -353,49 +346,32 @@ void Area::loadModels() {
 	_rooms.reserve(rooms.size());
 	for (size_t i = 0; i < rooms.size(); i++) {
 		const Aurora::LYTFile::Room &lytRoom = rooms[i];
-
-		if (lytRoom.model == "****")
-			// No model for that room
-			continue;
-
-		Room *room = new Room(lytRoom);
-
-		room->model = loadModelObject(lytRoom.model);
-		if (!room->model) {
-			delete room;
-			throw Common::Exception("Can't load model \"%s\" for area \"%s\"",
-			                        lytRoom.model.c_str(), _resRef.c_str());
-		}
-
-		room->model->setPosition(lytRoom.x, lytRoom.y, lytRoom.z);
-
-		_rooms.push_back(room);
+		_rooms.push_back(std::unique_ptr<Room>(new Room(lytRoom)));
 	}
-
 }
 
 void Area::loadVisibles() {
 	// Go through all rooms
-	for (std::vector<Room *>::iterator room = _rooms.begin(); room != _rooms.end(); ++room) {
+	for (auto room = _rooms.begin(); room != _rooms.end(); ++room) {
 		// Get visibility information for that room
 		const std::vector<Common::UString> &rooms = _vis.getVisibilityArray((*room)->lytRoom->model);
 
 		if (rooms.empty()) {
 			// If no info is available, assume all rooms are visible
 
-			for (std::vector<Room *>::iterator iRoom = _rooms.begin(); iRoom != _rooms.end(); ++iRoom)
-				(*room)->visibles.push_back(*iRoom);
+			for (auto iRoom = _rooms.begin(); iRoom != _rooms.end(); ++iRoom)
+				(*room)->visibles.push_back(iRoom->get());
 
 			return;
 		}
 
 		// Otherwise, go through all rooms again, look for a match with the visibilities
-		for (std::vector<Room *>::iterator iRoom = _rooms.begin(); iRoom != _rooms.end(); ++iRoom) {
+		for (auto iRoom = _rooms.begin(); iRoom != _rooms.end(); ++iRoom) {
 
 			for (std::vector<Common::UString>::const_iterator vRoom = rooms.begin(); vRoom != rooms.end(); ++vRoom) {
 				if (vRoom->equalsIgnoreCase((*iRoom)->lytRoom->model)) {
 					// Mark that room as visible from the first room
-					(*room)->visibles.push_back(*iRoom);
+					(*room)->visibles.push_back(iRoom->get());
 					break;
 				}
 			}
@@ -413,7 +389,7 @@ void Area::addEvent(const Events::Event &event) {
 void Area::processEventQueue() {
 	bool hasMove = false;
 	for (std::list<Events::Event>::const_iterator e = _eventQueue.begin();
-	     e != _eventQueue.end(); ++e) {
+		 e != _eventQueue.end(); ++e) {
 
 		if        (e->type == Events::kEventMouseMove) {
 			hasMove = true;

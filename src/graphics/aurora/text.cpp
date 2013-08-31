@@ -152,7 +152,7 @@ bool Text::isIn(float x, float y) const {
 }
 
 void Text::parseColors(const Common::UString &str, Common::UString &parsed,
-                       ColorPositions &colors) {
+					   ColorPositions &colors) {
 
 	parsed.clear();
 	colors.clear();

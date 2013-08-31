@@ -40,7 +40,7 @@ namespace Engines {
 namespace NWN {
 
 WidgetSlider::WidgetSlider(::Engines::GUI &gui, const Common::UString &tag,
-                           const Common::UString &model) :
+						   const Common::UString &model) :
 	ModelWidget(gui, tag, model), _position(0.0), _steps(0), _state(0) {
 
 	_model->setClickable(true);
