@@ -53,6 +53,7 @@
 #include "engines/kotor/placeable.h"
 #include "engines/kotor/door.h"
 #include "engines/kotor/creature.h"
+#include "engines/kotor/trigger.h"
 
 #include <memory>
 
@@ -235,6 +236,9 @@ void Area::loadGIT(const Aurora::GFFStruct &git) {
 
 	if (git.hasField("Creature List"))
 		loadCreatures(git.getList("Creature List"));
+
+	if (git.hasField("TriggerList"))
+		loadTriggers(git.getList("TriggerList"));
 }
 
 void Area::loadProperties(const Aurora::GFFStruct &props) {
@@ -336,6 +340,24 @@ void Area::loadCreatures(const Aurora::GFFList &list) {
 
 			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
 				_objectMap.insert(std::make_pair(*id, creature));
+		}
+
+	}
+}
+
+void Area::loadTriggers(const Aurora::GFFList &list) {
+	for (Aurora::GFFList::const_iterator c = list.begin(); c != list.end(); ++c) {
+		Trigger *trigger = new Trigger;
+
+		trigger->load(**c);
+
+		_objects.push_back(trigger);
+
+		if (!trigger->isStatic()) {
+			const std::list<uint32> &ids = trigger->getIDs();
+
+			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
+				_objectMap.insert(std::make_pair(*id, trigger));
 		}
 
 	}
