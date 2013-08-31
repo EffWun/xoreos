@@ -29,6 +29,7 @@
 
 #include "common/util.h"
 #include "common/ustring.h"
+#include "common/maths.h"
 
 #include "graphics/aurora/modelnode.h"
 #include "graphics/aurora/model.h"

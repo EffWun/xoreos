@@ -30,6 +30,7 @@
 #include "common/util.h"
 #include "common/error.h"
 #include "common/ustring.h"
+#include "common/maths.h"
 
 #include "graphics/graphics.h"
 #include "graphics/font.h"

@@ -111,4 +111,19 @@ static inline void vector2orientation(float vX, float vY, float &x, float &y, fl
 
 } // End of namespace Common
 
+#ifdef WIN32
+
+static inline double round(double val)
+{    
+	return floor(val + 0.5);
+}
+
+static inline float roundf(float val)
+{    
+	return floor(val + 0.5f);
+}
+
+#endif
+
+
 #endif // COMMON_MATHS_H
