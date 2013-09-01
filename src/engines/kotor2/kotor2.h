@@ -39,9 +39,17 @@
 #include "engines/engine.h"
 #include "engines/engineprobe.h"
 
+
 namespace Common {
 	class FileList;
 }
+
+namespace Engines {
+namespace KotOR {
+	class ScriptFunctions;
+}
+}
+
 
 namespace Engines {
 
@@ -102,6 +110,8 @@ private:
 	Graphics::Aurora::FPS *_fps;
 
 	Sound::ChannelHandle _menuMusic;
+
+	KotOR::ScriptFunctions *_scriptFuncs;
 
 
 	void init();

@@ -30,17 +30,9 @@
 #ifndef ENGINES_KOTOR_TRIGGER_H
 #define ENGINES_KOTOR_TRIGGER_H
 
-#include <list>
-#include <memory>
-
-#include "common/types.h"
-#include "common/ustring.h"
-
 #include "aurora/types.h"
 
-#include "graphics/aurora/types.h"
-
-#include "engines/kotor/object.h"
+#include "engines/kotor/situated.h"
 
 namespace Graphics {
 	class Renderable;
@@ -51,38 +43,21 @@ namespace Engines {
 namespace KotOR {
 
 /** A KotOR trigger. */
-class Trigger : public Object {
+class Trigger : public Situated {
 public:
 
 	void load(const Aurora::GFFStruct &trigger);
 
-	void show() override;
-	void hide() override;
+	void hide();
 
-	void getPosition(float &x, float &y, float &z) const override;
-	void getOrientation(float &x, float &y, float &z) const override;
+	void enter();
+	void leave();
 
-	void setPosition(float x, float y, float z) override;
-	void setOrientation(float x, float y, float z) override;
+	void highlight(bool enabled);
 
-	void enter() override;
-	void leave() override;
-
-	void highlight(bool enabled) override;
-
-private:
-
-	std::unique_ptr<Graphics::Renderable> _debugRenderable;
-
-	void load(const Aurora::GFFStruct &instance, const Aurora::GFFStruct *blueprint);
-
-	//void loadProperties(const Aurora::GFFStruct &gff);
-	//void loadPortrait(const Aurora::GFFStruct &gff);
-	//void loadAppearance();
-
-	//void getPartModels(PartModels &parts, uint32 state = 'b');
-	//void loadBody(PartModels &parts);
-	//void loadHead(PartModels &parts);
+protected:
+	void loadObject(const Aurora::GFFStruct &gff);
+	void loadAppearance();
 };
 
 } // End of namespace KotOR

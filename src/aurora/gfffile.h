@@ -125,6 +125,7 @@ private:
 class GFFStruct {
 public:
 	uint getFieldCount() const;
+	std::vector<Common::UString> getFields() const;
 
 	bool hasField(const Common::UString &field) const;
 

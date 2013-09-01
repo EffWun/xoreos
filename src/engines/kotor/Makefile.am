@@ -36,7 +36,9 @@ noinst_HEADERS = kotor.h \
                  gui/options/graphics.h \
                  gui/options/graphicsadv.h \
                  gui/options/sound.h \
-                 gui/options/soundadv.h
+                 gui/options/soundadv.h \
+                 script/container.h \
+                 script/functions.h
 
 libkotor_la_SOURCES = kotor.cpp \
                       console.cpp \
@@ -72,4 +74,15 @@ libkotor_la_SOURCES = kotor.cpp \
                       gui/options/graphics.cpp \
                       gui/options/graphicsadv.cpp \
                       gui/options/sound.cpp \
-                      gui/options/soundadv.cpp
+                      gui/options/soundadv.cpp \
+                      script/container.cpp \
+                      script/functions.cpp \
+                      script/functions_000.cpp \
+                      script/functions_100.cpp \
+                      script/functions_200.cpp \
+                      script/functions_300.cpp \
+                      script/functions_400.cpp \
+                      script/functions_500.cpp \
+                      script/functions_600.cpp \
+                      script/functions_700.cpp \
+                      script/functions_800.cpp

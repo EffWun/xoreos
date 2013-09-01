@@ -346,7 +346,10 @@ void Area::loadCreatures(const Aurora::GFFList &list) {
 }
 
 void Area::loadTriggers(const Aurora::GFFList &list) {
-	for (Aurora::GFFList::const_iterator c = list.begin(); c != list.end(); ++c) {
+	//for (Aurora::GFFList::const_iterator c = list.begin(); c != list.end(); ++c) {
+	auto c = list.begin();
+	std::advance(c, 15); {
+
 		Trigger *trigger = new Trigger;
 
 		trigger->load(**c);

@@ -49,12 +49,14 @@
 #include "engines/aurora/model.h"
 
 #include "engines/kotor/console.h"
+#include "engines/kotor/script/functions.h"
 
 #include "engines/kotor2/kotor2.h"
 #include "engines/kotor2/modelloader.h"
 #include "engines/kotor2/module.h"
 
 #include "engines/kotor2/gui/main/main.h"
+
 
 namespace Engines {
 
@@ -109,7 +111,7 @@ bool KotOR2EngineProbeXbox::probe(const Common::UString &directory, const Common
 }
 
 
-KotOR2Engine::KotOR2Engine(Aurora::Platform platform) : _platform(platform), _fps(0) {
+KotOR2Engine::KotOR2Engine(Aurora::Platform platform) : _platform(platform), _fps(0), _scriptFuncs(0) {
 }
 
 KotOR2Engine::~KotOR2Engine() {
@@ -161,6 +163,8 @@ void KotOR2Engine::init() {
 		return;
 
 	initGameConfig();
+
+	_scriptFuncs = new KotOR::ScriptFunctions();
 }
 
 void KotOR2Engine::initResources() {
@@ -375,20 +379,21 @@ void KotOR2Engine::checkConfig() {
 }
 
 void KotOR2Engine::deinit() {
+	delete _scriptFuncs;
 	delete _fps;
 }
 
 void KotOR2Engine::playIntroVideos() {
-	playVideo("leclogo");
-	playVideo("obsidianent");
-	playVideo("legal");
+	// playVideo("leclogo");
+	// playVideo("obsidianent");
+	// playVideo("legal");
 }
 
 void KotOR2Engine::playMenuMusic() {
 	if (SoundMan.isPlaying(_menuMusic))
 		return;
 
-	_menuMusic = playSound("mus_sion", Sound::kSoundTypeMusic, true);
+	// _menuMusic = playSound("mus_sion", Sound::kSoundTypeMusic, true);
 }
 
 void KotOR2Engine::stopMenuMusic() {
@@ -401,6 +406,7 @@ void KotOR2Engine::mainMenuLoop() {
 	::Engines::KotOR::Console console;
 	Module module(console);
 
+	_scriptFuncs->setModule(&module);
 	console.setModule(&module);
 
 	while (!EventMan.quitRequested()) {
@@ -428,6 +434,7 @@ void KotOR2Engine::mainMenuLoop() {
 		module.clear();
 	}
 
+	_scriptFuncs->setModule(0);
 	console.setModule();
 
 	stopMenuMusic();

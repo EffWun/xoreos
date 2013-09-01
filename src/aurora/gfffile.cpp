@@ -323,6 +323,15 @@ uint GFFStruct::getFieldCount() const {
 	return _fields.size();
 }
 
+std::vector<Common::UString> GFFStruct::getFields() const {
+	std::vector<Common::UString> ret;
+	ret.reserve(_fields.size());
+	for (auto i = _fields.begin(); i != _fields.end(); ++i) {
+		ret.push_back(i->first);
+    }
+	return ret;
+}
+
 bool GFFStruct::hasField(const Common::UString &field) const {
 	load();
 
