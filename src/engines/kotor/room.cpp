@@ -40,14 +40,6 @@
 #include "common/stream.h"
 #include "common/util.h"
 
-#include <fstream>
-
-namespace Aurora {
-
-   std::ofstream* xxofs = 0;
-
-}
-
 namespace Engines {
 
 namespace KotOR {
@@ -58,9 +50,7 @@ std::unique_ptr<Aurora::WalkMesh> loadWalkMesh(const Aurora::LYTFile::Room &lytR
 		if (!res) throw Common::Exception("No such WOK");
 
 	  Aurora::WOKFile wokFile;
-	  Aurora::xxofs = new std::ofstream("c:\\tmp\\wok_" + std::string(lytRoom.model.c_str()) + ".txt");
 	  wokFile.load(*res);
-	  delete Aurora::xxofs;
 	  auto ret = wokFile.get();
 	  ret->_position[0] = lytRoom.x;
 	  ret->_position[1] = lytRoom.y;
@@ -90,12 +80,12 @@ Room::Room(const Aurora::LYTFile::Room &lytRoom) :
 
 void Room::show() {
    _roomModel->show();
-   _walkMeshModel->show();
+   //_walkMeshModel->show();
 }
 
 void Room::hide() {
    _roomModel->hide();
-   _walkMeshModel->hide();
+   //_walkMeshModel->hide();
 }
 
 } // End of namespace KotOR

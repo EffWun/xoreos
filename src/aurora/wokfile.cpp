@@ -43,7 +43,6 @@
 #include <boost/fusion/include/fold.hpp>
 namespace fu = boost::fusion;
 
-#include <fstream>
 #include <iterator>
 #include <array>
 #include <memory>
@@ -170,17 +169,16 @@ struct dump {
 	}
 };
 
-extern std::ofstream* xxofs;
 void WOKFile::load(Common::SeekableReadStream &s) {
 	auto header = doLoad<wok::Header>(s);
-	fu::fold(header, xxofs, dump());
+	//fu::fold(header, xxofs, dump());
 
-	*xxofs << "--Vertices--" << std::endl;
+	// *xxofs << "--Vertices--" << std::endl;
 
 	for (auto i = 0; i < header.verticesCount; ++i) {
 		s.seekTo(header.offsetToVertices + i * sizeof(wok::Vertex));
 		auto vertex = doLoad<wok::Vertex>(s);
-		*xxofs << vertex.X << "," << vertex.Y << "," << vertex.Z << std::endl;
+		//*xxofs << vertex.X << "," << vertex.Y << "," << vertex.Z << std::endl;
 
 		Vector3 pt;
 		pt.x = vertex.X;
@@ -190,12 +188,12 @@ void WOKFile::load(Common::SeekableReadStream &s) {
 		_vertices.push_back(pt);
 	}
 
-	*xxofs << "--Normals--" << std::endl;
+	//*xxofs << "--Normals--" << std::endl;
 
 	for (auto i = 0; i < header.verticesCount; ++i) {
 		s.seekTo(header.offsetToNormalizedInvertedNormals + i * sizeof(wok::Vertex));
 		auto vertex = doLoad<wok::Vertex>(s);
-		*xxofs << vertex.X << "," << vertex.Y << "," << vertex.Z << std::endl;
+		//*xxofs << vertex.X << "," << vertex.Y << "," << vertex.Z << std::endl;
 
 		Vector3 pt;
 		pt.x = vertex.X;
@@ -205,12 +203,12 @@ void WOKFile::load(Common::SeekableReadStream &s) {
 		_normals.push_back(pt);
 	}
 
-	*xxofs << "--Triangles--" << std::endl;
+	//*xxofs << "--Triangles--" << std::endl;
 
 	for (auto i = 0; i < header.facesCount; ++i) {
 		s.seekTo(header.offsetToFaces + i * sizeof(wok::Face));
 		auto face = doLoad<wok::Face>(s);
-		*xxofs << face.V1_Index << "," << face.V2_Index << "," << face.V3_Index << std::endl;
+		//*xxofs << face.V1_Index << "," << face.V2_Index << "," << face.V3_Index << std::endl;
 		Triangle t;
 		t[0] = face.V1_Index;
 		t[1] = face.V2_Index;

@@ -359,7 +359,6 @@ void Area::loadTriggers(const Aurora::GFFList &list) {
 			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
 				_objectMap.insert(std::make_pair(*id, trigger));
 		}
-
 	}
 }
 
