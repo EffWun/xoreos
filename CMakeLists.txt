@@ -62,7 +62,7 @@ check_has_header("inttypes.h"  HAVE_INTTYPES_H)
 check_has_header("sys/types.h" HAVE_SYS_TYPES_H)
 
 
-# endianess detection, could be replaced by including Boost.Config 
+# endianess detection, could be replaced by including Boost.Config
 include(TestBigEndian)
 test_big_endian(XOREOS_BIG_ENDIAN)
 if(XOREOS_BIG_ENDIAN)
@@ -147,6 +147,20 @@ endif()
 include_directories(${LUA_INCLUDE_DIR})
 list(APPEND XOREOS_LIBRARIES ${LUA_LIBRARIES})
 
+find_package(Iconv REQUIRED)
+include_directories(${ICONV_INCLUDE_DIR})
+list(APPEND XOREOS_LIBRARIES ${ICONV_LIBRARIES})
+
+# TODO - fix iconv package const detection
+# if (${ICONV_SECOND_ARGUMENT_IS_CONST})
+  add_definitions(-DICONV_CONST=const)
+# else()
+#  add_definitions(-DICONV_CONST=)
+# endif()
+
+find_package(Ogg REQUIRED)
+include_directories(${OGG_INCLUDE_DIR})
+list(APPEND XOREOS_LIBRARIES ${OGG_LIBRARIES})
 
 # -------------------------------------------------------------------------
 # xoreos main targets, parsed from configure.ac and */Makefile.am
