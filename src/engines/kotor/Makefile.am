@@ -6,6 +6,8 @@ noinst_HEADERS = kotor.h \
                  console.h \
                  modelloader.h \
                  object.h \
+				 location.h \
+				 waypoint.h \
                  situated.h \
                  placeable.h \
                  door.h \

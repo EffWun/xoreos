@@ -43,6 +43,12 @@ namespace Common {
 	class FileList;
 }
 
+namespace Graphics {
+	namespace Aurora {
+		class FPS;
+    }
+}
+
 namespace Engines {
 
 namespace KotOR {

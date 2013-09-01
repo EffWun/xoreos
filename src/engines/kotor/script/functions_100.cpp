@@ -23,8 +23,8 @@
  * The Electron engine, Copyright (c) Obsidian Entertainment and BioWare corp.
  */
 
-/** @file engines/nwn/script/functions_100.cpp
- *  NWN script functions, 100-199.
+/** @file engines/kotor/script/functions_100.cpp
+ *  kotor script functions, 100-199.
  */
 
 #include <boost/bind.hpp>
@@ -37,13 +37,13 @@
 #include "aurora/nwscript/functioncontext.h"
 #include "aurora/nwscript/functionman.h"
 
-#include "engines/nwn/types.h"
-#include "engines/nwn/module.h"
-#include "engines/nwn/object.h"
-#include "engines/nwn/waypoint.h"
-#include "engines/nwn/creature.h"
+#include "engines/kotor/types.h"
+#include "engines/kotor/module.h"
+#include "engines/kotor/object.h"
+#include "engines/kotor/waypoint.h"
+#include "engines/kotor/creature.h"
 
-#include "engines/nwn/script/functions.h"
+#include "engines/kotor/script/functions.h"
 
 using Aurora::kObjectIDInvalid;
 
