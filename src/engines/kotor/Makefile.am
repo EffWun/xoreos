@@ -12,6 +12,8 @@ noinst_HEADERS = kotor.h \
                  creature.h \
                  area.h \
                  module.h \
+				 room.h \
+				 trigger.h \
                  gui/widgets/button.h \
                  gui/widgets/checkbox.h \
                  gui/widgets/kotorwidget.h \
@@ -46,6 +48,8 @@ libkotor_la_SOURCES = kotor.cpp \
                       creature.cpp \
                       area.cpp \
                       module.cpp \
+					  room.cpp \
+					  trigger.cpp \
                       gui/widgets/button.cpp \
                       gui/widgets/checkbox.cpp \
                       gui/widgets/kotorwidget.cpp \
