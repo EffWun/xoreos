@@ -31,6 +31,8 @@
 
 #include "aurora/nwscript/variablecontainer.h"
 
+#include "boost/lexical_cast.hpp"
+
 namespace Aurora {
 
 namespace NWScript {
@@ -66,14 +68,34 @@ const Variable &VariableContainer::getVariable(const Common::UString &var) const
 	return v->second;
 }
 
+Common::UString convertIndex(int index) {
+	return Common::UString("var_" + boost::lexical_cast<std::string>(index));
+}
+
+Variable &VariableContainer::getVariable(int index, Type type) {
+	return getVariable(convertIndex(index), type);
+}
+
+const Variable &VariableContainer::getVariable(int index) const {
+	return getVariable(convertIndex(index));
+}
+
 void VariableContainer::setVariable(const Common::UString &var, const Variable &value) {
 	_variables[var] = value;
+}
+
+void VariableContainer::setVariable(int index, const Variable &value) {
+	setVariable(convertIndex(index), value);
 }
 
 void VariableContainer::removeVariable(const Common::UString &var) {
 	VariableMap::iterator v = _variables.find(var);
 	if (v != _variables.end())
 		_variables.erase(v);
+}
+
+void VariableContainer::removeVariable(int index) {
+	removeVariable(convertIndex(index));
 }
 
 void VariableContainer::clearVariables() {

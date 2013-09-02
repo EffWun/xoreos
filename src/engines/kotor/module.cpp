@@ -43,14 +43,37 @@
 
 #include "engines/kotor/module.h"
 #include "engines/kotor/area.h"
+#include "engines/kotor/object.h"
+#include "engines/kotor/creature.h"
 
 namespace Engines {
 
 namespace KotOR {
 
+class Journal : public Object {
+public:
+    Journal() {
+		_tag = "tr_journal";
+		setVariable(0x28, true);
+    }
+	void show() override {}
+	void hide() override {}
+	void enter() override {}
+	void leave() override {}
+    void highlight(bool enabled) override {}
+};
+
+class PC : public Creature {
+public:
+};
+
 Module::Module(Engines::Console &console) : _console(&console), _area(0),
 	_currentTexturePack(-1), _exit(false) {
 
+	_pc.reset(new PC);
+	_journal.reset(new Journal);
+	addObject(*_pc);
+	addObject(*_journal);
 }
 
 Module::~Module() {
@@ -113,6 +136,10 @@ void Module::run() {
 
 void Module::showMenu() {
 	// TODO: Module::showMenu()
+}
+
+Creature *Module::getPC() {
+	return _pc.get();
 }
 
 void Module::load() {

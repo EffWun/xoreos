@@ -34,10 +34,13 @@
 #include "common/configman.h"
 
 #include "aurora/resman.h"
+#include "aurora/nwscript/objectcontainer.h"
 
 #include "events/types.h"
 
 #include "engines/nwn/ifofile.h"
+
+#include <memory>
 
 namespace Engines {
 
@@ -46,9 +49,11 @@ class Console;
 namespace KotOR {
 
 class Area;
+class Creature;
+class Object;
 
 /** A KotOR module. */
-class Module {
+class Module : public Aurora::NWScript::ObjectContainer {
 public:
 	Module(Console &console);
 	virtual ~Module();
@@ -66,6 +71,8 @@ public:
 
 	void showMenu();
 
+	Creature *getPC();
+
 protected:
 	Console *_console;
 
@@ -74,6 +81,9 @@ protected:
 
 	/** The current module's area. */
 	Area *_area;
+
+	std::unique_ptr<Creature> _pc;
+	std::unique_ptr<Object> _journal;
 
 	/** Resources added by the current module. */
 	std::list<Aurora::ResourceManager::ChangeID> _resources;

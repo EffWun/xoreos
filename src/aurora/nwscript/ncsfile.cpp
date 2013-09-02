@@ -411,6 +411,7 @@ void NCSFile::decompile() {
 // OPCODES!
 
 void NCSFile::o_rsadd(InstructionType type) {
+	// seems wrong - rsadd is "reserve space on stack", yet this pushes the enum value onto the stack instead?
 	switch (type) {
 		case kInstTypeInt:
 			_stack.push(kTypeInt);

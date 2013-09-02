@@ -50,9 +50,15 @@ public:
 	Variable &getVariable(const Common::UString &var, Type type = kTypeVoid);
 	const Variable &getVariable(const Common::UString &var) const;
 
+	Variable &getVariable(int index, Type type = kTypeVoid);
+	const Variable &getVariable(int index) const;
+
 	void setVariable(const Common::UString &var, const Variable &value);
+	void setVariable(int index, const Variable &value);
 
 	void removeVariable(const Common::UString &var);
+	void removeVariable(int index);
+
 	void clearVariables();
 
 private:

@@ -35,12 +35,14 @@
 #include "common/types.h"
 #include "common/ustring.h"
 
+#include "aurora/nwscript/object.h"
+
 namespace Engines {
 
 namespace KotOR {
 
 /** An object within a KotOR area. */
-class Object {
+class Object : public Aurora::NWScript::Object {
 public:
 	Object();
 	virtual ~Object();
@@ -48,7 +50,6 @@ public:
 	virtual void show() = 0;
 	virtual void hide() = 0;
 
-	const Common::UString &getTag() const;
 	const Common::UString &getName() const;
 	const Common::UString &getDescription() const;
 
@@ -75,7 +76,6 @@ public:
 protected:
 	bool _loaded;
 
-	Common::UString _tag;
 	Common::UString _name;
 	Common::UString _description;
 

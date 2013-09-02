@@ -45,10 +45,6 @@ Object::Object() : _loaded(false), _static(false), _usable(true) {
 Object::~Object() {
 }
 
-const Common::UString &Object::getTag() const {
-	return _tag;
-}
-
 const Common::UString &Object::getName() const {
 	return _name;
 }

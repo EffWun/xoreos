@@ -428,7 +428,7 @@ void ScriptFunctions::getObjectByTag(Aurora::NWScript::FunctionContext &ctx) {
 	if (!_module->findObjectInit(_objSearchContext, tag))
 		return;
 
-	while (nth-- >= 0)
+	while (nth-- > 0)
 		_module->findNextObject(_objSearchContext);
 
 	ctx.getReturn() = _objSearchContext.getObject();
