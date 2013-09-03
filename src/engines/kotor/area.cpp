@@ -48,6 +48,7 @@
 #include "engines/aurora/util.h"
 #include "engines/aurora/model.h"
 
+#include "engines/kotor/module.h"
 #include "engines/kotor/area.h"
 #include "engines/kotor/room.h"
 #include "engines/kotor/placeable.h"
@@ -61,7 +62,7 @@ namespace Engines {
 
 namespace KotOR {
 
-Area::Area() : _loaded(false), _visible(false), _activeObject(0), _highlightAll(false) {
+Area::Area(Module& module) : _module(&module), _loaded(false), _visible(false), _activeObject(0), _highlightAll(false) {
 }
 
 Area::~Area() {
@@ -297,15 +298,7 @@ void Area::loadPlaceables(const Aurora::GFFList &list) {
 
 		placeable->load(**p);
 
-		_objects.push_back(placeable);
-
-		if (!placeable->isStatic()) {
-			const std::list<uint32> &ids = placeable->getIDs();
-
-			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
-				_objectMap.insert(std::make_pair(*id, placeable));
-		}
-
+		loadObject(*placeable);
 	}
 }
 
@@ -315,15 +308,7 @@ void Area::loadDoors(const Aurora::GFFList &list) {
 
 		door->load(**d);
 
-		_objects.push_back(door);
-
-		if (!door->isStatic()) {
-			const std::list<uint32> &ids = door->getIDs();
-
-			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
-				_objectMap.insert(std::make_pair(*id, door));
-		}
-
+		loadObject(*door);
 	}
 }
 
@@ -333,35 +318,32 @@ void Area::loadCreatures(const Aurora::GFFList &list) {
 
 		creature->load(**c);
 
-		_objects.push_back(creature);
-
-		if (!creature->isStatic()) {
-			const std::list<uint32> &ids = creature->getIDs();
-
-			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
-				_objectMap.insert(std::make_pair(*id, creature));
-		}
-
+		loadObject(*creature);
 	}
 }
 
 void Area::loadTriggers(const Aurora::GFFList &list) {
-	//for (Aurora::GFFList::const_iterator c = list.begin(); c != list.end(); ++c) {
-	auto c = list.begin();
-	std::advance(c, 15); {
-
+	for (Aurora::GFFList::const_iterator c = list.begin(); c != list.end(); ++c) {
 		Trigger *trigger = new Trigger;
 
 		trigger->load(**c);
 
-		_objects.push_back(trigger);
+		loadObject(*trigger);
+	}
+}
 
-		if (!trigger->isStatic()) {
-			const std::list<uint32> &ids = trigger->getIDs();
+void Area::loadObject(Object &object) {
+	object.setArea(*this);
 
-			for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
-				_objectMap.insert(std::make_pair(*id, trigger));
-		}
+	_objects.push_back(&object);
+
+	if (!object.isStatic()) {
+		const std::list<uint32> &ids = object.getIDs();
+
+		for (std::list<uint32>::const_iterator id = ids.begin(); id != ids.end(); ++id)
+			_objectMap.insert(std::make_pair(*id, &object));
+
+		_module->addObject(object);
 	}
 }
 

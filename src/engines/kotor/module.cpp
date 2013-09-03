@@ -50,30 +50,8 @@ namespace Engines {
 
 namespace KotOR {
 
-class Journal : public Object {
-public:
-    Journal() {
-		_tag = "tr_journal";
-		setVariable(0x28, true);
-    }
-	void show() override {}
-	void hide() override {}
-	void enter() override {}
-	void leave() override {}
-    void highlight(bool enabled) override {}
-};
-
-class PC : public Creature {
-public:
-};
-
 Module::Module(Engines::Console &console) : _console(&console), _area(0),
-	_currentTexturePack(-1), _exit(false) {
-
-	_pc.reset(new PC);
-	_journal.reset(new Journal);
-	addObject(*_pc);
-	addObject(*_journal);
+	_currentTexturePack(-1), _exit(false), _pc(0) {
 }
 
 Module::~Module() {
@@ -139,7 +117,7 @@ void Module::showMenu() {
 }
 
 Creature *Module::getPC() {
-	return _pc.get();
+	return _pc;
 }
 
 void Module::load() {
@@ -400,8 +378,8 @@ bool Module::handleCameraMouseInput(const Events::Event &e) {
 	return true;
 }
 
-Area *Module::createArea() const {
-	return new Area;
+Area *Module::createArea() {
+	return new Area(*this);
 }
 
 } // End of namespace KotOR

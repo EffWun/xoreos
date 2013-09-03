@@ -63,7 +63,20 @@ namespace Engines {
 namespace KotOR {
 
 void ScriptFunctions::registerFunctions300(const Defaults &d) {
+	FunctionMan.registerFunction("SetIsDestroyable", 323,
+			boost::bind(&ScriptFunctions::setIsDestroyable, this, _1),
+			createSignature(4, kTypeVoid, kTypeInt, kTypeInt, kTypeInt),
+			createDefaults(2, d.int1, d.int0));
+}
 
+// 323: Set the destroyable status of the caller.
+// - bDestroyable: If this is FALSE, the caller does not fade out on death, but
+//   sticks around as a corpse.
+// - bRaiseable: If this is TRUE, the caller can be raised via resurrection.
+// - bSelectableWhenDead: If this is TRUE, the caller is selectable after death.
+// void SetIsDestroyable(int bDestroyable, int bRaiseable = TRUE, int bSelectableWhenDead = FALSE);
+void ScriptFunctions::setIsDestroyable(Aurora::NWScript::FunctionContext &ctx) {
+	warning("TODO: SetIsDestroyable");
 }
 
 } // End of namespace KotOR

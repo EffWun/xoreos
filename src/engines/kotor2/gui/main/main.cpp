@@ -27,15 +27,20 @@
  *  The KotOR 2 main menu.
  */
 
-#include "common/util.h"
+
+#include "engines/kotor2/module.h"
+#include "engines/kotor2/gui/main/main.h"
+
+#include "engines/kotor/gui/widgets/kotorwidget.h"
+#include "engines/kotor/creature.h"
+#include "engines/kotor/area.h"
+#include "engines/kotor/trigger.h"
+
+#include "aurora/nwscript/ncsfile.h"
 
 #include "events/events.h"
 
-#include "engines/kotor/gui/widgets/kotorwidget.h"
-
-#include "engines/kotor2/module.h"
-
-#include "engines/kotor2/gui/main/main.h"
+#include "common/util.h"
 
 namespace Engines {
 
@@ -77,8 +82,12 @@ void MainMenu::callbackActive(Widget &widget) {
 	}
 
 	if (widget.getTag() == "BTN_NEWGAME") {
-		if (_module->load("001EBO"))
+		if (_module->load("001EBO")) {
+			_module->_pc = static_cast<KotOR::Creature*>(_module->findObject("3CFD"));
+			KotOR::Trigger* t = static_cast<KotOR::Trigger*>(_module->findObject("tr_sign_cockpit"));
+			t->_ncs->run(t, _module->getPC());
 			_returnCode = 2;
+        }
 		return;
 	}
 }

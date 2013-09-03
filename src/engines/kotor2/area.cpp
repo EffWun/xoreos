@@ -33,7 +33,8 @@ namespace Engines {
 
 namespace KotOR2 {
 
-Area::Area() {
+Area::Area(Engines::KotOR::Module& module) :
+	Engines::KotOR::Area(module) {
 }
 
 Area::~Area() {

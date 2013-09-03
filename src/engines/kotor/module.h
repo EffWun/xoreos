@@ -73,7 +73,8 @@ public:
 
 	Creature *getPC();
 
-protected:
+//protected:
+public:
 	Console *_console;
 
 	/** The current module's name. */
@@ -82,8 +83,7 @@ protected:
 	/** The current module's area. */
 	Area *_area;
 
-	std::unique_ptr<Creature> _pc;
-	std::unique_ptr<Object> _journal;
+	Creature* _pc;
 
 	/** Resources added by the current module. */
 	std::list<Aurora::ResourceManager::ChangeID> _resources;
@@ -119,7 +119,7 @@ protected:
 	bool handleCameraKeyboardInput(const Events::Event &e);
 	bool handleCameraMouseInput(const Events::Event &e);
 
-	virtual Area *createArea() const;
+	virtual Area *createArea();
 
 	friend class Console;
 };

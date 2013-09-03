@@ -58,13 +58,14 @@ namespace Engines {
 
 namespace KotOR {
 
+	class Module;
 class Object;
 class Room;
 
 /** A KotOR area. */
 class Area : public Events::Notifyable {
 public:
-	Area();
+	explicit Area(Module& module);
 	virtual ~Area();
 
 	void load(const Common::UString &resRef);
@@ -85,13 +86,15 @@ protected:
 	void notifyCameraMoved();
 
 
-private:
+// private:
+public:
 	typedef std::list<Object *> ObjectList;
 
 	typedef std::map<uint32, Object *> ObjectMap;
 
 
 	bool _loaded;
+	Module* _module;
 
 	Common::UString _resRef;
 	Common::UString _name;
@@ -146,6 +149,8 @@ private:
 	void loadDoors     (const Aurora::GFFList &list);
 	void loadCreatures (const Aurora::GFFList &list);
 	void loadTriggers  (const Aurora::GFFList &list);
+
+	void loadObject(Object &object);
 
 	void stopSound();
 	void stopAmbientMusic();

@@ -167,7 +167,13 @@ private:
 	void getEnteringObject(Aurora::NWScript::FunctionContext &ctx);
 	void getObjectByTag(Aurora::NWScript::FunctionContext &ctx);
 	void getLocalBoolean(Aurora::NWScript::FunctionContext &ctx);
+	void setLocalBoolean(Aurora::NWScript::FunctionContext &ctx);
 	void getPartyLeader(Aurora::NWScript::FunctionContext &ctx);
+	void setIsDestroyable(Aurora::NWScript::FunctionContext &ctx);
+	void effectVisualEffect(Aurora::NWScript::FunctionContext &ctx);
+	void applyEffectToObject(Aurora::NWScript::FunctionContext &ctx);
+	void actionPlayAnimation(Aurora::NWScript::FunctionContext &ctx);
+	void getTag(Aurora::NWScript::FunctionContext &ctx);
 };
 
 } // End of namespace KotOR

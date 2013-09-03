@@ -33,7 +33,7 @@ namespace Engines {
 
 namespace KotOR {
 
-Object::Object() : _loaded(false), _static(false), _usable(true) {
+Object::Object() : _area(0), _loaded(false), _static(false), _usable(true) {
 	_position   [0] = 0.0;
 	_position   [1] = 0.0;
 	_position   [2] = 0.0;
@@ -71,6 +71,14 @@ bool Object::isClickable() const {
 
 const std::list<uint32> &Object::getIDs() const {
 	return _ids;
+}
+
+void Object::setArea(Area& area) {
+	_area = &area;
+}
+
+Area& Object::getArea() const {
+	return *_area;
 }
 
 void Object::getPosition(float &x, float &y, float &z) const {

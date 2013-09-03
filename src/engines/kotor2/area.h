@@ -38,7 +38,7 @@ namespace KotOR2 {
 
 class Area : public Engines::KotOR::Area {
 public:
-	Area();
+	explicit Area(Engines::KotOR::Module& module);
 	~Area();
 };
 

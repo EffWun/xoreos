@@ -69,10 +69,37 @@ void ScriptFunctions::registerFunctions000(const Defaults &d) {
 	FunctionMan.registerFunction("GetEnteringObject", 25,
 			boost::bind(&ScriptFunctions::getEnteringObject, this, _1),
 			createSignature(1, kTypeObject));
+	FunctionMan.registerFunction("ActionPlayAnimation", 40,
+			boost::bind(&ScriptFunctions::actionPlayAnimation, this, _1),
+			createSignature(4, kTypeVoid, kTypeInt, kTypeFloat, kTypeFloat),
+			createDefaults(2, d.float1_0, d.float0_0));
 }
 
 void ScriptFunctions::getEnteringObject(Aurora::NWScript::FunctionContext &ctx) {
 	ctx.getReturn() = ctx.getTriggerer();
+}
+
+// 40: Cause the action subject to play an animation
+// - nAnimation: ANIMATION_*
+// - fSpeed: Speed of the animation
+// - fDurationSeconds: Duration of the animation (this is not used for Fire and
+//   Forget animations) If a time of -1.0f is specified for a looping animation
+//   it will loop until the next animation is applied.
+// void ActionPlayAnimation(int nAnimation, float fSpeed = 1.0, float fDurationSeconds = 0.0);
+void ScriptFunctions::actionPlayAnimation(Aurora::NWScript::FunctionContext &ctx) {
+	// TODO: ScriptFunctions::actionPlayAnimation(): /Action/
+
+	Object *object = convertObject(ctx.getCaller());
+	if (!object)
+		return;
+
+	Animation animation = (Animation) ctx.getParams()[0].getInt();
+
+	// TODO: ScriptFunctions::actionPlayAnimation(): speed, second
+	// float speed   = ctx.getParams()[1].getFloat();
+	// float seconds = ctx.getParams()[2].getFloat();
+
+	// object->playAnimation(animation);
 }
 
 } // End of namespace KotOR

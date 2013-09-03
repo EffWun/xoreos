@@ -67,6 +67,9 @@ void ScriptFunctions::registerFunctions600(const Defaults &d) {
 	FunctionMan.registerFunction("GetLocalBoolean", 679,
 			boost::bind(&ScriptFunctions::getLocalBoolean, this, _1),
 			createSignature(3, kTypeInt, kTypeObject, kTypeString));
+	FunctionMan.registerFunction("SetLocalBoolean", 680,
+			boost::bind(&ScriptFunctions::setLocalBoolean, this, _1),
+			createSignature(4, kTypeVoid, kTypeObject, kTypeString, kTypeInt));
 }
 
 // 679. GetLocalBoolean
@@ -77,7 +80,21 @@ void ScriptFunctions::getLocalBoolean(Aurora::NWScript::FunctionContext &ctx) {
 
 	Aurora::NWScript::Object *object = params[0].getObject();
 	if (object) {
-		ctx.getReturn() = object->getVariable(params[1].getInt(), kTypeInt).getInt();
+		bool val = object->getVariable(params[1].getInt(), kTypeInt).getInt() != 0;
+		ctx.getReturn() = static_cast<int>(val);
+    }
+}
+
+// 680. SetLocalBoolean
+// This sets a boolean flag on an object
+// currently the index is a range between 20 and 63
+void ScriptFunctions::setLocalBoolean(Aurora::NWScript::FunctionContext &ctx) {
+	const Aurora::NWScript::Parameters &params = ctx.getParams();
+
+	Aurora::NWScript::Object *object = params[0].getObject();
+	if (object) {
+		bool val = params[2].getInt() != 0;
+		object->setVariable(params[1].getInt(), static_cast<int>(val));
     }
 }
 

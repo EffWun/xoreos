@@ -74,6 +74,10 @@ void ScriptFunctions::registerFunctions200(const Defaults &d) {
 			boost::bind(&ScriptFunctions::getObjectByTag, this, _1),
 			createSignature(3, kTypeObject, kTypeString, kTypeInt),
 			createDefaults(1, d.int0));
+	FunctionMan.registerFunction("ApplyEffectToObject", 220,
+			boost::bind(&ScriptFunctions::applyEffectToObject, this, _1),
+			createSignature(5, kTypeVoid, kTypeInt, kTypeEngineType, kTypeObject, kTypeFloat),
+			createDefaults(1, d.float0_0));
 }
 
 void ScriptFunctions::getObjectByTag(Aurora::NWScript::FunctionContext &ctx) {
@@ -96,6 +100,12 @@ void ScriptFunctions::getObjectByTag(Aurora::NWScript::FunctionContext &ctx) {
     } while (nth-- > 0);
 
 	ctx.getReturn() = _objSearchContext.getObject();
+}
+
+// 220: Apply eEffect to oTarget.
+//void ApplyEffectToObject(int nDurationType, effect eEffect, object oTarget, float fDuration = 0.0f);
+void ScriptFunctions::applyEffectToObject(Aurora::NWScript::FunctionContext &ctx) {
+	warning("TODO: ApplyEffectToObject");
 }
 
 } // End of namespace KotOR

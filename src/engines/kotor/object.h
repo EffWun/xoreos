@@ -41,6 +41,8 @@ namespace Engines {
 
 namespace KotOR {
 
+class Area;
+
 /** An object within a KotOR area. */
 class Object : public Aurora::NWScript::Object {
 public:
@@ -61,6 +63,9 @@ public:
 	bool isClickable() const;
 
 	const std::list<uint32> &getIDs() const;
+
+	void setArea(Area& area);
+	Area& getArea() const;
 
 	virtual void getPosition(float &x, float &y, float &z) const;
 	virtual void getOrientation(float &x, float &y, float &z) const;
@@ -85,6 +90,8 @@ protected:
 	bool _usable;
 
 	std::list<uint32> _ids;
+
+	Area* _area;
 
 	float _position[3];
 	float _orientation[3];

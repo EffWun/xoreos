@@ -48,15 +48,18 @@ namespace Engines {
 
 namespace KotOR {
 
+Trigger::Trigger() {
+}
+
 void Trigger::load(const Aurora::GFFStruct &trigger) {
 	Common::UString temp = trigger.getString("TemplateResRef");
 
-	Aurora::GFFFile *utt = 0;
+	std::unique_ptr<Aurora::GFFFile> utt;
 	if (!temp.empty()) {
 		try {
-			utt = new Aurora::GFFFile(temp, Aurora::kFileTypeUTT, MKTAG('U', 'T', 'T', ' '));
+			utt.reset(new Aurora::GFFFile(temp, Aurora::kFileTypeUTT, MKTAG('U', 'T', 'T', ' ')));
 		} catch (...) {
-			delete utt;
+			utt.reset();
 		}
 	}
 
@@ -67,7 +70,7 @@ void Trigger::load(const Aurora::GFFStruct &trigger) {
 
 	auto& x = utt->getTopLevel();
 	auto fields = x.getFields();
-	std::ofstream ofs("c:\\tmp\\field_" + std::string(temp.c_str()) + ".txt");
+	//std::ofstream ofs("c:\\tmp\\field_" + std::string(temp.c_str()) + ".txt");
 	//for (auto i = fields.begin(); i != fields.end(); ++i) {
 	//	//ofs << i->c_str() << ": " << x.getString(*i).c_str() << std::endl;
 	//	ofs << i->c_str() << std::endl;
@@ -78,10 +81,7 @@ void Trigger::load(const Aurora::GFFStruct &trigger) {
 	auto entryScriptPath = x.getString("ScriptOnEnter");
 	auto exitScriptPath = x.getString("ScriptOnExit");
 
-	Aurora::NWScript::NCSFile ncs(ResMan.getResource(entryScriptPath, Aurora::kFileTypeNCS));
-	ncs.run();
-
-	delete utt;
+	_ncs.reset(new Aurora::NWScript::NCSFile(ResMan.getResource(entryScriptPath, Aurora::kFileTypeNCS)));
 }
 
 void Trigger::hide() {

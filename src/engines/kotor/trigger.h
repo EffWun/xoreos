@@ -34,9 +34,18 @@
 
 #include "engines/kotor/situated.h"
 
+#include <memory>
+
 namespace Graphics {
 	class Renderable;
 }
+
+namespace Aurora {
+	namespace NWScript {
+		class NCSFile;
+    }
+}
+
 
 namespace Engines {
 
@@ -45,6 +54,7 @@ namespace KotOR {
 /** A KotOR trigger. */
 class Trigger : public Situated {
 public:
+	Trigger();
 
 	void load(const Aurora::GFFStruct &trigger);
 
@@ -54,6 +64,8 @@ public:
 	void leave();
 
 	void highlight(bool enabled);
+
+	std::unique_ptr<Aurora::NWScript::NCSFile> _ncs;
 
 protected:
 	void loadObject(const Aurora::GFFStruct &gff);

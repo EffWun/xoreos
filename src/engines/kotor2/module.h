@@ -48,7 +48,7 @@ public:
 	~Module();
 
 protected:
-	::Engines::KotOR::Area *createArea() const;
+	::Engines::KotOR::Area *createArea() override;
 };
 
 } // End of namespace KotOR2

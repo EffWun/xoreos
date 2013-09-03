@@ -40,8 +40,8 @@ Module::Module(Console &console) : Engines::KotOR::Module(console) {
 Module::~Module() {
 }
 
-::Engines::KotOR::Area *Module::createArea() const {
-	return new ::Engines::KotOR2::Area;
+::Engines::KotOR::Area *Module::createArea() {
+	return new ::Engines::KotOR2::Area(*this);
 }
 
 } // End of namespace KotOR2
