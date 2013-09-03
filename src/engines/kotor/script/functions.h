@@ -164,8 +164,13 @@ private:
 
 	void jumpTo(Object *object, Area *area, float x, float y, float z);
 
+	void printFloat(Aurora::NWScript::FunctionContext &ctx);
+	void floatToString(Aurora::NWScript::FunctionContext &ctx);
+
 	void getEnteringObject(Aurora::NWScript::FunctionContext &ctx);
 	void getObjectByTag(Aurora::NWScript::FunctionContext &ctx);
+	void getLocalNumber(Aurora::NWScript::FunctionContext &ctx);
+	void setLocalNumber(Aurora::NWScript::FunctionContext &ctx);
 	void getLocalBoolean(Aurora::NWScript::FunctionContext &ctx);
 	void setLocalBoolean(Aurora::NWScript::FunctionContext &ctx);
 	void getPartyLeader(Aurora::NWScript::FunctionContext &ctx);
@@ -174,6 +179,18 @@ private:
 	void applyEffectToObject(Aurora::NWScript::FunctionContext &ctx);
 	void actionPlayAnimation(Aurora::NWScript::FunctionContext &ctx);
 	void getTag(Aurora::NWScript::FunctionContext &ctx);
+
+	void delayCommand(Aurora::NWScript::FunctionContext &ctx);
+	void setListening(Aurora::NWScript::FunctionContext &ctx);
+	void setListenPattern(Aurora::NWScript::FunctionContext &ctx);
+	void getHasSpell(Aurora::NWScript::FunctionContext &ctx);
+	void getIsEncounterCreature(Aurora::NWScript::FunctionContext &ctx);
+	void intToString(Aurora::NWScript::FunctionContext &ctx);
+	void getIsObjectValid(Aurora::NWScript::FunctionContext &ctx);
+	void getDistanceBetween(Aurora::NWScript::FunctionContext &ctx);
+	void getStringRight(Aurora::NWScript::FunctionContext &ctx);
+	void stringToInt(Aurora::NWScript::FunctionContext &ctx);
+	void getWaypointByTag(Aurora::NWScript::FunctionContext &ctx);
 };
 
 } // End of namespace KotOR

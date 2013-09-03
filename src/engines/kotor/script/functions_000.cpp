@@ -34,6 +34,7 @@
 #include "common/maths.h"
 
 #include "aurora/nwscript/types.h"
+#include "aurora/nwscript/variable.h"
 #include "aurora/nwscript/util.h"
 #include "aurora/nwscript/functioncontext.h"
 #include "aurora/nwscript/functionman.h"
@@ -46,6 +47,8 @@
 #include "engines/kotor/creature.h"
 
 #include "engines/kotor/script/functions.h"
+#include "engines/kotor/script/function_template.h"
+
 
 using Aurora::kObjectIDInvalid;
 
@@ -65,42 +68,57 @@ namespace Engines {
 
 namespace KotOR {
 
+struct Random {
+	typedef mpl::vector<int> args;
+	typedef mpl::vector<void> defaults;
+	typedef int return_type;
+
+	int operator()(int nMaxInteger) const {
+		return 0;
+    }
+};
+
+struct FloatToString {
+	typedef mpl::vector<float, int, int> args;
+	typedef mpl::vector<void, mpl::int_<18>, mpl::int_<9>> defaults;
+	typedef Common::UString return_type;
+
+	Common::UString operator()(float,int,int) const {
+		return "";
+    }
+};
+
 void ScriptFunctions::registerFunctions000(const Defaults &d) {
-	FunctionMan.registerFunction("GetEnteringObject", 25,
-			boost::bind(&ScriptFunctions::getEnteringObject, this, _1),
-			createSignature(1, kTypeObject));
-	FunctionMan.registerFunction("ActionPlayAnimation", 40,
-			boost::bind(&ScriptFunctions::actionPlayAnimation, this, _1),
-			createSignature(4, kTypeVoid, kTypeInt, kTypeFloat, kTypeFloat),
-			createDefaults(2, d.float1_0, d.float0_0));
+	FunctionMan.registerFunction("Random", 1,
+			run_function<Random>,
+			createSignature(1, kTypeInt, kTypeInt));
+	FunctionMan.registerFunction("FloatToString", 40,
+			run_function<FloatToString>,
+			createSignature(4, kTypeString, kTypeFloat, kTypeInt, kTypeInt),
+			createDefaults(2, d.int18, d.int9));
 }
 
-void ScriptFunctions::getEnteringObject(Aurora::NWScript::FunctionContext &ctx) {
-	ctx.getReturn() = ctx.getTriggerer();
-}
 
-// 40: Cause the action subject to play an animation
-// - nAnimation: ANIMATION_*
-// - fSpeed: Speed of the animation
-// - fDurationSeconds: Duration of the animation (this is not used for Fire and
-//   Forget animations) If a time of -1.0f is specified for a looping animation
-//   it will loop until the next animation is applied.
-// void ActionPlayAnimation(int nAnimation, float fSpeed = 1.0, float fDurationSeconds = 0.0);
-void ScriptFunctions::actionPlayAnimation(Aurora::NWScript::FunctionContext &ctx) {
-	// TODO: ScriptFunctions::actionPlayAnimation(): /Action/
 
-	Object *object = convertObject(ctx.getCaller());
-	if (!object)
-		return;
+// 7: Delay aActionToDelay by fSeconds.
+// * No return value, but if an error occurs, the log file will contain
+//   "DelayCommand failed.".
+//void DelayCommand(float fSeconds, action aActionToDelay);
+//void ScriptFunctions::delayCommand(Aurora::NWScript::FunctionContext &ctx) {
+//	if (!_module)
+//		return;
+//
+//	Common::UString script = ctx.getScriptName();
+//	if (script.empty())
+//		throw Common::Exception("ScriptFunctions::assignCommand(): Script needed");
+//
+//	uint32 delay = ctx.getParams()[0].getFloat() * 1000;
+//
+//	const Aurora::NWScript::ScriptState &state = ctx.getParams()[1].getScriptState();
+//
+//	_module->delayScript(script, state, ctx.getCaller(), ctx.getTriggerer(), delay);
+//}
 
-	Animation animation = (Animation) ctx.getParams()[0].getInt();
-
-	// TODO: ScriptFunctions::actionPlayAnimation(): speed, second
-	// float speed   = ctx.getParams()[1].getFloat();
-	// float seconds = ctx.getParams()[2].getFloat();
-
-	// object->playAnimation(animation);
-}
 
 } // End of namespace KotOR
 
